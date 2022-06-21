@@ -1,12 +1,11 @@
 package com.gobrs.async.autoconfig;
 
 
-import java.util.List;
-
+import com.gobrs.async.rule.Rule;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import com.gobrs.async.rule.Rule;
+import java.util.List;
 
 /**
  * @author sizegang1
@@ -58,6 +57,7 @@ public class GobrsAsyncProperties {
 
     /**
      * Default timeout
+     *
      * @return
      */
     private long timeout = 3000;

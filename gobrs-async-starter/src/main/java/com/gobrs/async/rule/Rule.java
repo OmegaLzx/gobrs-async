@@ -3,6 +3,7 @@ package com.gobrs.async.rule;
 import java.io.Serializable;
 
 /**
+ * @author sizegang1
  * @program: gobrs-async
  * @ClassName Rule
  * @description:
@@ -10,7 +11,6 @@ import java.io.Serializable;
  * @create: 2022-01-26 01:39
  * @Version 1.0
  * @date 2022-01-27
- * @author sizegang1
  **/
 
 public class Rule implements Serializable {

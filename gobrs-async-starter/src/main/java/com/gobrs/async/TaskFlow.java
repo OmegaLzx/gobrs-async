@@ -3,11 +3,7 @@ package com.gobrs.async;
 import com.gobrs.async.autoconfig.GobrsAsyncProperties;
 import com.gobrs.async.task.AsyncTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: gobrs-async-starter
@@ -19,12 +15,11 @@ import java.util.Map;
 public class TaskFlow {
 
 
-    private GobrsAsyncProperties gobrsAsyncProperties;
-
     /**
      * Task tree
      */
     private final IdentityHashMap<AsyncTask, List<AsyncTask>> denpendedTasks = new IdentityHashMap<>();
+    private GobrsAsyncProperties gobrsAsyncProperties;
 
     synchronized TaskReceive after(final AsyncTask... asyncTasks) {
 

@@ -9,7 +9,7 @@ import com.gobrs.async.TaskSupport;
  * @author: sizegang
  * @create: 2022-04-17
  **/
-public class ProxyTask implements GobrsTask{
+public class ProxyTask implements GobrsTask {
 
     private AsyncTask asyncTask;
 
@@ -25,7 +25,7 @@ public class ProxyTask implements GobrsTask{
 
     @Override
     public boolean nessary(Object o, TaskSupport support) {
-        return asyncTask.nessary(o,support);
+        return asyncTask.nessary(o, support);
     }
 
     @Override

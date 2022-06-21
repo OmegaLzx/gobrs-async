@@ -1,9 +1,5 @@
 package com.gobrs.async.callback;
 
-import com.gobrs.async.callback.ErrorCallback;
-
-import java.util.concurrent.CompletionException;
-
 /**
  * @program: gobrs-async
  * @ClassName AsyncExceptionInterceptor
@@ -15,7 +11,8 @@ import java.util.concurrent.CompletionException;
 public interface AsyncTaskExceptionInterceptor<Param> {
     /**
      * error CallBack
+     *
      * @param errorCallback
      */
-     void exception(ErrorCallback<Param> errorCallback);
+    void exception(ErrorCallback<Param> errorCallback);
 }

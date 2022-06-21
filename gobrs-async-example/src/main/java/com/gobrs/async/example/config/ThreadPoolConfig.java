@@ -24,7 +24,7 @@ public class ThreadPoolConfig {
     private GobrsAsyncThreadPoolFactory factory;
 
     @PostConstruct
-    public void gobrsThreadPoolExecutor(){
+    public void gobrsThreadPoolExecutor() {
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(300, 500, 30, TimeUnit.SECONDS,
                 new LinkedBlockingQueue());
         factory.setThreadPoolExecutor(threadPoolExecutor);

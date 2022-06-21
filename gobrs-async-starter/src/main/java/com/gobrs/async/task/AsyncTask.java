@@ -6,22 +6,14 @@ import com.gobrs.async.callback.ErrorCallback;
 import com.gobrs.async.def.DefaultConfig;
 import com.gobrs.async.domain.TaskResult;
 import com.gobrs.async.enums.ExpState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @program: gobrs-async-starter
- * @ClassName AsyncTask
- * @description:
- * @author: sizegang
- * @create: 2022-03-16
- **/
-public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Result> {
 
-    Logger logger = LoggerFactory.getLogger(AsyncTask.class);
+@Slf4j
+public abstract class AsyncTask<P, R> implements GobrsTask<P, R> {
 
     private String name;
 
@@ -50,11 +42,6 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
 
     /**
      * get result of depend on class
-     *
-     * @param support
-     * @param clazz   depend on class
-     * @param <R>
-     * @return
      */
     public <R> R getResult(TaskSupport support, Class<? extends Task> clazz) {
         TaskResult<R> taskResult = getTaskResult(support, clazz);
@@ -85,7 +72,7 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
      * @param <R>     auto suggestion by IDE
      * @return
      */
-    public <R> R getDependResult(TaskSupport support, Class<? extends AsyncTask<Param, R>> clazz) {
+    public <R> R getDependResult(TaskSupport support, Class<? extends AsyncTask<P, R>> clazz) {
         TaskResult<R> taskResult = getTaskResult(support, clazz);
         if (taskResult != null) {
             return taskResult.getResult();
@@ -101,7 +88,7 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
      * @param <R>     auto suggestion by IDE
      * @return
      */
-    public <R> TaskResult<R> getDependTaskResult(TaskSupport support, Class<? extends AsyncTask<Param, R>> clazz) {
+    public <R> TaskResult<R> getDependTaskResult(TaskSupport support, Class<? extends AsyncTask<P, R>> clazz) {
         return getTaskResult(support, clazz);
     }
 
@@ -111,8 +98,8 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
      * @param support
      * @return
      */
-    public Result getResult(TaskSupport support) {
-        TaskResult<Result> taskResult = getTaskResult(support);
+    public R getResult(TaskSupport support) {
+        TaskResult<R> taskResult = getTaskResult(support);
         if (taskResult != null) {
             return taskResult.getResult();
         }
@@ -125,7 +112,7 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
      * @param support
      * @return
      */
-    public TaskResult<Result> getTaskResult(TaskSupport support) {
+    public TaskResult<R> getTaskResult(TaskSupport support) {
         Map<Class, TaskResult> resultMap = support.getResultMap();
         Class thisResultClass = this.getClass();
         return resultMap.get(thisResultClass) != null ? resultMap.get(thisResultClass) : resultMap.get(depKey(thisResultClass));
@@ -137,10 +124,10 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
      * @param support
      * @return
      */
-    public Param getParam(TaskSupport support) {
+    public P getParam(TaskSupport support) {
         Object taskResult = support.getParam();
         if (taskResult != null) {
-            return (Param) taskResult;
+            return (P) taskResult;
         }
         return null;
     }
@@ -157,7 +144,7 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
             support.taskLoader.setExpCode(new AtomicInteger(ExpState.DEFAULT.getCode()));
             support.taskLoader.errorInterrupted(errorCallback);
         } catch (Exception ex) {
-            logger.error("stopAsync error {}", ex);
+            log.error("stopAsync error {}", ex);
             return false;
         }
         return true;
@@ -172,7 +159,7 @@ public abstract class AsyncTask<Param, Result> implements GobrsTask<Param, Resul
             support.taskLoader.errorInterrupted(errorCallback);
 
         } catch (Exception ex) {
-            logger.error("stopAsync error {} ", ex);
+            log.error("stopAsync error {} ", ex);
             return false;
         }
         return true;

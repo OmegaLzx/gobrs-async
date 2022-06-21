@@ -17,40 +17,30 @@ import com.gobrs.async.task.AsyncTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class TaskActuator implements Runnable, Cloneable {
 
-    Logger logger = LoggerFactory.getLogger(TaskActuator.class);
-
-    public TaskSupport support;
-
     /**
      * Tasks to be performed
      */
     public final AsyncTask task;
-
-
-    /**
-     * Upstream dependent quantity
-     */
-    private volatile int upstreamDepdends;
-
     /**
      * depend task
      */
     private final List<AsyncTask> subTasks;
-
+    public TaskSupport support;
     public AsyncParam param;
-
+    Logger log = LoggerFactory.getLogger(TaskActuator.class);
+    /**
+     * Upstream dependent quantity
+     */
+    private volatile int upstreamDepdends;
     private Lock lock;
 
     private Map<AsyncTask, List<AsyncTask>> upwardTasksMap;
@@ -147,7 +137,7 @@ class TaskActuator implements Runnable, Cloneable {
                     task.onFail(support);
                 } catch (Exception ex) {
                     // Failed events are not processed
-                    logger.error("task onFail process is error {}", ex);
+                    log.error("task onFail process is error {}", ex);
                 }
                 /**
                  * transaction task

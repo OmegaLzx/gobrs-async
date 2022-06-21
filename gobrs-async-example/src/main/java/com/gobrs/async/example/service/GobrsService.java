@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @program: gobrs-async-core
@@ -23,33 +26,25 @@ import java.util.concurrent.*;
 @Service
 public class GobrsService {
 
+    ExecutorService executorService = Executors.newCachedThreadPool();
     @Autowired
     private AService aService;
-
     @Autowired
     private BService bService;
     @Autowired
     private CService cService;
     @Autowired
     private DService dService;
-
     @Autowired
     private EService eService;
-
     @Autowired
     private FService fService;
-
     @Autowired
     private GService gService;
-
     @Autowired
     private GobrsAsync gobrsAsync;
-
     @Resource
     private RuleThermalLoad ruleThermalLoad;
-
-    ExecutorService executorService = Executors.newCachedThreadPool();
-
 
     public void gobrsAsync() {
         gobrsAsync.go("test", () -> new Object());

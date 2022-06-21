@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Task(failSubExec = true)
-public class BService extends AsyncTask<Object, Object>  {
+public class BService extends AsyncTask<Object, Object> {
 
 
     int i = 10000;

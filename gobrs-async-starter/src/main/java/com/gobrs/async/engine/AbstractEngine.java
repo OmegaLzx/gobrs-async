@@ -5,8 +5,7 @@ import com.gobrs.async.GobrsAsync;
 import com.gobrs.async.rule.Rule;
 import com.gobrs.async.spring.GobrsSpring;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.List;
 
 /**
  * @author sizegang1
@@ -22,6 +21,7 @@ public abstract class AbstractEngine implements RuleEngine {
 
     /**
      * Process rule analysis
+     *
      * @param rule
      */
     @Override

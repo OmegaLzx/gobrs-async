@@ -5,8 +5,6 @@ import com.gobrs.async.anno.Task;
 import com.gobrs.async.task.AsyncTask;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 /**
  * @program: gobrs-async-starter
  * @ClassName EService
@@ -16,8 +14,9 @@ import java.util.Map;
  **/
 @Component
 @Task(callback = true)
-public class GService extends AsyncTask<Object, Object>  {
-    int i  = 10000;
+public class GService extends AsyncTask<Object, Object> {
+    int i = 10000;
+
     @Override
     public void prepare(Object o) {
 

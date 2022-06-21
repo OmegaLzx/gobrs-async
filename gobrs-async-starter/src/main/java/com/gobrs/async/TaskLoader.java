@@ -1,10 +1,10 @@
 package com.gobrs.async;
 
+import com.gobrs.async.callback.AsyncTaskExceptionInterceptor;
 import com.gobrs.async.callback.AsyncTaskPostInterceptor;
 import com.gobrs.async.callback.AsyncTaskPreInterceptor;
 import com.gobrs.async.callback.ErrorCallback;
 import com.gobrs.async.domain.AsyncResult;
-import com.gobrs.async.callback.AsyncTaskExceptionInterceptor;
 import com.gobrs.async.enums.ExpState;
 import com.gobrs.async.exception.GobrsAsyncException;
 import com.gobrs.async.exception.TimeoutException;
@@ -29,43 +29,28 @@ import java.util.concurrent.locks.ReentrantLock;
  **/
 
 public class TaskLoader {
+    private final static ArrayList<Future<?>> EmptyFutures = new ArrayList<>(0);
+    private final ExecutorService executorService;
+    private final CountDownLatch completeLatch;
+    private final Map<AsyncTask, TaskActuator> processMap;
+    private final long timeout;
+    private final Lock lock = new ReentrantLock();
+    public TaskTrigger.AssistantTask assistantTask;
+    public ArrayList<Future<?>> futures;
+    public Map<AsyncTask, Future> futuresAsync = new ConcurrentHashMap<>();
     /**
      * Interruption code
      */
     private AtomicInteger expCode = new AtomicInteger(ExpState.DEFAULT.getCode());
-
     /**
      * task Loader is Running
      */
     private AtomicBoolean isRunning = new AtomicBoolean(true);
-
-    private final ExecutorService executorService;
-
     private AsyncTaskExceptionInterceptor asyncExceptionInterceptor = GobrsSpring.getBean(AsyncTaskExceptionInterceptor.class);
-
     private AsyncTaskPreInterceptor asyncTaskPreInterceptor = GobrsSpring.getBean(AsyncTaskPreInterceptor.class);
-
     private AsyncTaskPostInterceptor asyncTaskPostInterceptor = GobrsSpring.getBean(AsyncTaskPostInterceptor.class);
-
-    private final CountDownLatch completeLatch;
-
-    private final Map<AsyncTask, TaskActuator> processMap;
-
-    public TaskTrigger.AssistantTask assistantTask;
-
-    private final long timeout;
-
     private volatile Throwable error;
-
-    private final Lock lock = new ReentrantLock();
-
     private volatile boolean canceled = false;
-
-    public ArrayList<Future<?>> futures;
-
-    public Map<AsyncTask, Future> futuresAsync = new ConcurrentHashMap<>();
-
-    private final static ArrayList<Future<?>> EmptyFutures = new ArrayList<>(0);
 
     TaskLoader(ExecutorService executorService, Map<AsyncTask, TaskActuator> processMap,
                long timeout) {

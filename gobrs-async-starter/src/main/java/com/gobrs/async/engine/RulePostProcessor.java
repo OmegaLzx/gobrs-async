@@ -6,18 +6,9 @@ import com.gobrs.async.autoconfig.GobrsAsyncProperties;
 import com.gobrs.async.exception.NotTaskRuleException;
 import com.gobrs.async.rule.Rule;
 import com.gobrs.async.spring.GobrsSpring;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.ansi.AnsiColor;
-import org.springframework.boot.ansi.AnsiOutput;
-import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-
-import javax.annotation.Resource;
 
 import java.util.List;
 import java.util.Optional;
@@ -55,7 +46,6 @@ public class RulePostProcessor implements ApplicationListener<ApplicationReadyEv
             return 1;
         }).orElseThrow(() -> new NotTaskRuleException("spring.gobrs.async.rules is empty"));
     }
-
 
 
 }

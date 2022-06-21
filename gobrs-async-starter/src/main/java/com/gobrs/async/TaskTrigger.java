@@ -6,7 +6,6 @@ import com.gobrs.async.task.AsyncTask;
 import com.gobrs.async.threadpool.GobrsAsyncThreadPoolFactory;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 
 /**
  * @program: gobrs-async-starter
@@ -18,12 +17,9 @@ import java.util.concurrent.ExecutorService;
 class TaskTrigger {
 
     private final TaskFlow taskFlow;
-
-    private GobrsAsyncThreadPoolFactory threadPoolFactory = GobrsSpring.getBean(GobrsAsyncThreadPoolFactory.class);
-
-    private IdentityHashMap<AsyncTask, TaskActuator> prepareTaskMap = new IdentityHashMap<>();
-
     public AssistantTask assistantTask;
+    private GobrsAsyncThreadPoolFactory threadPoolFactory = GobrsSpring.getBean(GobrsAsyncThreadPoolFactory.class);
+    private IdentityHashMap<AsyncTask, TaskActuator> prepareTaskMap = new IdentityHashMap<>();
 
     TaskTrigger(TaskFlow taskFlow) {
         this.taskFlow = taskFlow;
@@ -121,15 +117,28 @@ class TaskTrigger {
         return loader;
     }
 
+    /**
+     * Get the task support , Similar task bus
+     *
+     * @param param
+     * @return
+     */
+    private TaskSupport getSupport(AsyncParam param) {
+        TaskSupport taskSupport = new TaskSupport();
+        taskSupport.setParam(param.get());
+        return taskSupport;
+    }
 
     /**
      * Task flow End tasks
      */
     private class TerminationTask extends TaskActuator {
 
-        /**task executor
+        /**
+         * task executor
+         *
          * @param handler
-         * @param depdending The number of tasks to depend on
+         * @param depdending    The number of tasks to depend on
          * @param dependedTasks Array of dependent tasks
          */
         TerminationTask(AsyncTask handler, int depdending, List<AsyncTask> dependedTasks) {
@@ -177,18 +186,6 @@ class TaskTrigger {
         public void onFail(TaskSupport support) {
 
         }
-    }
-
-    /**
-     * Get the task support , Similar task bus
-     *
-     * @param param
-     * @return
-     */
-    private TaskSupport getSupport(AsyncParam param) {
-        TaskSupport taskSupport = new TaskSupport();
-        taskSupport.setParam(param.get());
-        return taskSupport;
     }
 
 }

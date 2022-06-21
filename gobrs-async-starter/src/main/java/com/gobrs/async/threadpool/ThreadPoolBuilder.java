@@ -1,8 +1,6 @@
 package com.gobrs.async.threadpool;
 
 import com.gobrs.async.exception.GobrsAsyncException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.concurrent.*;
@@ -74,6 +72,58 @@ public class ThreadPoolBuilder {
      */
     private Boolean allowCoreThreadTimeOut = false;
 
+    public static ThreadPoolExecutor buildByThreadPool(ThreadPool pool) {
+        check(pool);
+        ThreadPoolExecutor executor;
+        try {
+            executor = new ThreadPoolExecutor(pool.getCorePoolSize(), pool.getMaxPoolSize()
+                    , pool.getKeepAliveTime(), pool.getTimeUnit(), pool.getWorkQueue(), caseReject(pool.getRejectedExecutionHandler()));
+            executor.allowCoreThreadTimeOut(pool.getAllowCoreThreadTimeOut());
+        } catch (Exception exception) {
+            throw new GobrsAsyncException(String.format("Thread Pool Config Error %s", exception));
+        }
+        return executor;
+    }
+
+    private static void check(ThreadPool pool) {
+        if (pool.getCorePoolSize() == null) {
+            throw new GobrsAsyncException("thread pool coreSize empty");
+        }
+        if (pool.getMaxPoolSize() == null) {
+            throw new GobrsAsyncException("thread pool maxSize empty");
+        }
+        if (pool.getKeepAliveTime() == null) {
+            throw new GobrsAsyncException("thread pool keepAliveTime size empty");
+        }
+        if (pool.getCapacity() == null) {
+            pool.setCapacity(THREADPOOLQUEUESIZE);
+        }
+    }
+
+    public static RejectedExecutionHandler caseReject(String rejected) {
+        if (rejected == null) {
+            return new ThreadPoolExecutor.AbortPolicy();
+        }
+
+        RejectedExecutionHandler rejectedExecutionHandler;
+        switch (rejected) {
+            case "CallerRunsPolicy":
+                rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy();
+                break;
+            case "AbortPolicy":
+                rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
+                break;
+            case "DiscardPolicy":
+                rejectedExecutionHandler = new ThreadPoolExecutor.DiscardPolicy();
+                break;
+            case "DiscardOldestPolicy":
+                rejectedExecutionHandler = new ThreadPoolExecutor.DiscardOldestPolicy();
+                break;
+            default:
+                rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
+        }
+        return rejectedExecutionHandler;
+    }
 
     public int getCorePoolSize() {
         return corePoolSize;
@@ -165,7 +215,6 @@ public class ThreadPoolBuilder {
         return this;
     }
 
-
     public Boolean getAllowCoreThreadTimeOut() {
         return allowCoreThreadTimeOut;
     }
@@ -185,61 +234,6 @@ public class ThreadPoolBuilder {
         executor.allowCoreThreadTimeOut(allowCoreThreadTimeOut);
         return executor;
     }
-
-
-    public static ThreadPoolExecutor buildByThreadPool(ThreadPool pool) {
-        check(pool);
-        ThreadPoolExecutor executor;
-        try {
-            executor = new ThreadPoolExecutor(pool.getCorePoolSize(), pool.getMaxPoolSize()
-                    , pool.getKeepAliveTime(), pool.getTimeUnit(), pool.getWorkQueue(), caseReject(pool.getRejectedExecutionHandler()));
-            executor.allowCoreThreadTimeOut(pool.getAllowCoreThreadTimeOut());
-        } catch (Exception exception) {
-            throw new GobrsAsyncException(String.format("Thread Pool Config Error %s", exception));
-        }
-        return executor;
-    }
-
-    private static void check(ThreadPool pool) {
-        if (pool.getCorePoolSize() == null) {
-            throw new GobrsAsyncException("thread pool coreSize empty");
-        }
-        if (pool.getMaxPoolSize() == null) {
-            throw new GobrsAsyncException("thread pool maxSize empty");
-        }
-        if (pool.getKeepAliveTime() == null) {
-            throw new GobrsAsyncException("thread pool keepAliveTime size empty");
-        }
-        if (pool.getCapacity() == null) {
-            pool.setCapacity(THREADPOOLQUEUESIZE);
-        }
-    }
-
-    public static RejectedExecutionHandler caseReject(String rejected) {
-        if (rejected == null) {
-            return new ThreadPoolExecutor.AbortPolicy();
-        }
-
-        RejectedExecutionHandler rejectedExecutionHandler;
-        switch (rejected) {
-            case "CallerRunsPolicy":
-                rejectedExecutionHandler = new ThreadPoolExecutor.CallerRunsPolicy();
-                break;
-            case "AbortPolicy":
-                rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
-                break;
-            case "DiscardPolicy":
-                rejectedExecutionHandler = new ThreadPoolExecutor.DiscardPolicy();
-                break;
-            case "DiscardOldestPolicy":
-                rejectedExecutionHandler = new ThreadPoolExecutor.DiscardOldestPolicy();
-                break;
-            default:
-                rejectedExecutionHandler = new ThreadPoolExecutor.AbortPolicy();
-        }
-        return rejectedExecutionHandler;
-    }
-
 
     private Integer calculateCoreNum() {
         int cpuCoreNum = Runtime.getRuntime().availableProcessors();

@@ -6,13 +6,16 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-/**
- * @author sizegang1
- * @date 2022-01-27 23:56 2022-01-27 23:56
- */
+
 public class GobrsSpring implements ApplicationContextAware, BeanFactoryPostProcessor {
 
     public static ApplicationContext applicationContext;
+    private static ConfigurableListableBeanFactory cf;
+
+    //获取applicationContext
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -20,12 +23,6 @@ public class GobrsSpring implements ApplicationContextAware, BeanFactoryPostProc
             GobrsSpring.applicationContext = applicationContext;
         }
     }
-
-    //获取applicationContext
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
 
     //通过name获取 Bean.
     public static Object getBean(String name) {
@@ -45,8 +42,6 @@ public class GobrsSpring implements ApplicationContextAware, BeanFactoryPostProc
     public static <T> T getBean(String name, Class<T> clazz) {
         return getApplicationContext().getBean(name, clazz);
     }
-
-    private static ConfigurableListableBeanFactory cf;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class RuleThermalLoad implements RuleThermal {
 
-    Logger logger = LoggerFactory.getLogger(RuleThermalLoad.class);
+    Logger log = LoggerFactory.getLogger(RuleThermalLoad.class);
     @Resource
     private RuleEngine ruleEngine;
 
@@ -30,9 +30,9 @@ public class RuleThermalLoad implements RuleThermal {
         try {
             ruleEngine.doParse(rule, true);
             gobrsAsync.readyTo(rule.getName(), true);
-            logger.info("rule {} update success", rule.getName());
+            log.info("rule {} update success", rule.getName());
         } catch (Exception ex) {
-            logger.error("rule {} update fail {}", rule.getName(), ex);
+            log.error("rule {} update fail {}", rule.getName(), ex);
         }
     }
 
@@ -43,9 +43,9 @@ public class RuleThermalLoad implements RuleThermal {
             try {
                 ruleEngine.doParse(x, true);
                 gobrsAsync.readyTo(x.getName(), true);
-                logger.info("rule {} update success", x.getName());
+                log.info("rule {} update success", x.getName());
             } catch (Exception ex) {
-                logger.error("rule {} update fail {}", x.getName(), ex);
+                log.error("rule {} update fail {}", x.getName(), ex);
             }
         });
     }

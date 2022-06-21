@@ -11,6 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @create: 2022-04-17
  **/
 public class Reporter {
-    private Map<String, Entry> report = new ConcurrentHashMap<String, Entry>();
+    private Map<String, Entry> report = new ConcurrentHashMap<>();
 
 }

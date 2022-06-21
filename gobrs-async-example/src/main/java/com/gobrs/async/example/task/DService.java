@@ -4,8 +4,6 @@ import com.gobrs.async.TaskSupport;
 import com.gobrs.async.task.AsyncTask;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 /**
  * @program: gobrs-async-starter
  * @ClassName DService
@@ -14,7 +12,7 @@ import java.util.Map;
  * @create: 2022-03-20
  **/
 @Component
-public class DService extends AsyncTask<Object, Object>  {
+public class DService extends AsyncTask<Object, Object> {
 
     int i = 10000;
 

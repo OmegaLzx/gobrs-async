@@ -9,11 +9,10 @@ package com.gobrs.async.callback;
  **/
 public interface AsyncTaskPostInterceptor {
 
-   /**
-    *
-    * @param result task result
-    * @param taskName taskName
-    */
-   void postProcess(Object result,  String taskName);
+    /**
+     * @param result   task result
+     * @param taskName taskName
+     */
+    void postProcess(Object result, String taskName);
 
 }

@@ -1,6 +1,5 @@
 package com.gobrs.async;
 
-import com.gobrs.async.domain.AsyncResult;
 import com.gobrs.async.domain.TaskResult;
 
 import java.util.HashMap;

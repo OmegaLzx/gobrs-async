@@ -2,7 +2,6 @@ package com.gobrs.async.threadpool;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @program: gobrs-async-starter
@@ -27,6 +26,7 @@ public class GobrsAsyncThreadPoolFactory {
 
     /**
      * The user dynamically sets the thread pool parameters
+     *
      * @param threadPoolExecutor
      */
     public void setThreadPoolExecutor(ExecutorService threadPoolExecutor) {
