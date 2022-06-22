@@ -4,18 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.gobrs.async.GobrsAsync;
 import com.gobrs.async.rule.Rule;
 import com.gobrs.async.spring.GobrsSpring;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
-/**
- * @author sizegang1
- * @program: gobrs-async
- * @ClassName AbstractEngine
- * @description:
- * @author: sizegang
- * @Version 1.0
- * @date 2022-01-27 22:04
- **/
+
+@Slf4j
 public abstract class AbstractEngine implements RuleEngine {
 
 

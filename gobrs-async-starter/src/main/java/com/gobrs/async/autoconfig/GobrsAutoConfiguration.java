@@ -52,7 +52,7 @@ public class GobrsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(value = RuleEngine.class)
     public RuleEngine ruleEngine() {
-        return new RuleParseEngine<>();
+        return new RuleParseEngine();
     }
 
 

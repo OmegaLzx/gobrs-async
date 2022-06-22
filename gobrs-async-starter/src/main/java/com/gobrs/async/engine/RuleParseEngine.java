@@ -9,6 +9,7 @@ import com.gobrs.async.exception.GobrsAsyncException;
 import com.gobrs.async.rule.Rule;
 import com.gobrs.async.spring.GobrsSpring;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -27,7 +28,8 @@ import static com.gobrs.async.def.DefaultConfig.RULE_EXCLUSIVE;
  * @Version 1.0
  * @date 2022-02-05 12:07
  **/
-public class RuleParseEngine<T> extends AbstractEngine {
+@Slf4j
+public class RuleParseEngine extends AbstractEngine {
 
     @Resource
     private GobrsAsyncProperties gobrsAsyncProperties;
@@ -40,6 +42,7 @@ public class RuleParseEngine<T> extends AbstractEngine {
     public void doParse(Rule rule, boolean reload) {
 
         String[] taskFlows = rule.getContent().replaceAll("\\s+", "").split(gobrsAsyncProperties.getSplit());
+        log.info("com.gobrs.async.engine.RuleParseEngine.doParse taskFlows {}", Arrays.toString(taskFlows));
         /**
          * cache rules
          */
