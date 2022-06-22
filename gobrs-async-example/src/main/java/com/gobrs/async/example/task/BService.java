@@ -2,24 +2,18 @@ package com.gobrs.async.example.task;
 
 import com.gobrs.async.TaskSupport;
 import com.gobrs.async.anno.Task;
+import com.gobrs.async.domain.TaskResult;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-/**
- * @program: gobrs-async-starter
- * @ClassName BService
- * @description:
- * @author: sizegang
- * @create: 2022-03-20
- **/
+import java.util.Map;
+
+
 @Component
-@Task(failSubExec = true)
+@Task(failSubExec = true, name = "任务B")
+@Slf4j
 public class BService extends AsyncTask<Object, Object> {
-
-
-    int i = 10000;
-
-
     @Override
     public void prepare(Object o) {
 
@@ -27,13 +21,13 @@ public class BService extends AsyncTask<Object, Object> {
 
     @Override
     public Object task(Object o, TaskSupport support) {
+        Map<Class, TaskResult> resultMap = support.getResultMap();
+        TaskResult taskResult = resultMap.get(AService.class);
+        log.info("{}", taskResult);
         try {
-            System.out.println("BService Begin");
-            Thread.sleep(10000);
-            for (int i1 = 0; i1 < i; i1++) {
-                i1 += i1;
-            }
-            System.out.println("BService Finish");
+            log.info("BService Begin");
+            Thread.sleep(3000);
+            log.info("BService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

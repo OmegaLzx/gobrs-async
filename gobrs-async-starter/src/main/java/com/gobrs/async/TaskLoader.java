@@ -10,6 +10,7 @@ import com.gobrs.async.exception.GobrsAsyncException;
 import com.gobrs.async.exception.TimeoutException;
 import com.gobrs.async.spring.GobrsSpring;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 /**
  * @program: gobrs-async-starter
@@ -27,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author: sizegang
  * @create: 2022-03-16
  **/
-
+@Slf4j
 public class TaskLoader {
     private final static ArrayList<Future<?>> EmptyFutures = new ArrayList<>(0);
     private final ExecutorService executorService;
@@ -68,6 +70,7 @@ public class TaskLoader {
 
     AsyncResult load() {
         ArrayList<TaskActuator> begins = getBeginProcess();
+        log.info("com.gobrs.async.TaskLoader.load 当前taskActuator {}", begins.stream().map(t -> t.getTask().getName()).collect(Collectors.toList()));
         for (TaskActuator process : begins) {
             /**
              * Start the thread to perform tasks without any dependencies

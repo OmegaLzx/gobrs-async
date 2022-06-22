@@ -1,6 +1,5 @@
 package com.gobrs.async.example.inteceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.gobrs.async.callback.AsyncTaskExceptionInterceptor;
 import com.gobrs.async.callback.ErrorCallback;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +18,6 @@ public class GobrsInterceptor implements AsyncTaskExceptionInterceptor {
 
     @Override
     public void exception(ErrorCallback errorCallback) {
-        log.error("Execute global interceptor  error{}", JSONObject.toJSONString(errorCallback.getThrowable()));
+        log.error("全局拦截器执行 error", errorCallback.getThrowable());
     }
 }

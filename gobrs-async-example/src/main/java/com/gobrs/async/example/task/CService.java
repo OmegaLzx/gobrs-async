@@ -1,22 +1,17 @@
 package com.gobrs.async.example.task;
 
 import com.gobrs.async.TaskSupport;
+import com.gobrs.async.anno.Task;
 import com.gobrs.async.domain.TaskResult;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 
-/**
- * @program: gobrs-async-starter
- * @ClassName CService
- * @description:
- * @author: sizegang
- * @create: 2022-03-20
- **/
 @Component
+@Slf4j
+@Task(name = "任务C")
 public class CService extends AsyncTask<Object, Integer> {
-
-    int i = 10000;
 
 
     @Override
@@ -27,16 +22,11 @@ public class CService extends AsyncTask<Object, Integer> {
     @Override
     public Integer task(Object o, TaskSupport support) {
         try {
-            System.out.println("CService Begin");
+            log.info("CService Begin");
             //获取 所依赖的父任务的结果
             AService result = getResult(support, AService.class);
-
-            Thread.sleep(300);
-            for (int i1 = 0; i1 < i; i1++) {
-                i1 += i1;
-            }
-
-            System.out.println("CService Finish");
+            Thread.sleep(3000);
+            log.info("CService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,6 +50,5 @@ public class CService extends AsyncTask<Object, Integer> {
 
     @Override
     public void onFail(TaskSupport support) {
-        System.out.println(1 / 0);
     }
 }

@@ -3,20 +3,15 @@ package com.gobrs.async.example.task;
 import com.gobrs.async.TaskSupport;
 import com.gobrs.async.anno.Task;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-/**
- * @program: gobrs-async-starter
- * @ClassName AService
- * @description:
- * @author: sizegang
- * @create: 2022-03-20
- **/
-@Task(failSubExec = true)
+
+@Task(failSubExec = true, name = "任务A")
 @Component
+@Slf4j
 public class AService extends AsyncTask<Object, Object> {
 
-    int i = 10000;
 
     @Override
     public void prepare(Object o) {
@@ -27,16 +22,13 @@ public class AService extends AsyncTask<Object, Object> {
     @Override
     public Object task(Object o, TaskSupport support) {
         try {
-            System.out.println("AService Begin");
-            Thread.sleep(300);
-            for (int i1 = 0; i1 < i; i1++) {
-                i1 += i1;
-            }
-            System.out.println("AService Finish");
+            log.info("AService Begin");
+            Thread.sleep(3000);
+            log.info("AService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "result";
+        return "xxxfuck";
     }
 
     @Override
@@ -47,7 +39,13 @@ public class AService extends AsyncTask<Object, Object> {
 
     @Override
     public void onSuccess(TaskSupport support) {
-
+        try {
+            log.info("AService onSuccess Begin");
+            Thread.sleep(3000);
+            log.info("AService onSuccess Finish");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
