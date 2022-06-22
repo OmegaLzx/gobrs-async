@@ -1,7 +1,9 @@
 package com.gobrs.async.example.task;
 
 import com.gobrs.async.TaskSupport;
+import com.gobrs.async.anno.Task;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
  * @create: 2022-03-20
  **/
 @Component
+@Task(name = "任务H")
+@Slf4j
 public class HService extends AsyncTask<Object, Object> {
     int i = 10000;
 
@@ -23,9 +27,9 @@ public class HService extends AsyncTask<Object, Object> {
     @Override
     public Object task(Object o, TaskSupport support) {
         try {
-            System.out.println("HService Begin");
+            log.info("HService Begin");
             Thread.sleep(100);
-            System.out.println("HService Finish");
+            log.info("HService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

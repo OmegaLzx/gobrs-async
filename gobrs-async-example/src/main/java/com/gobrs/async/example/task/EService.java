@@ -1,7 +1,9 @@
 package com.gobrs.async.example.task;
 
 import com.gobrs.async.TaskSupport;
+import com.gobrs.async.anno.Task;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Component;
  * @create: 2022-03-20
  **/
 @Component
+@Task(name = "任务E")
+@Slf4j
 public class EService extends AsyncTask<Object, Object> {
     int i = 10000;
 
@@ -29,7 +33,7 @@ public class EService extends AsyncTask<Object, Object> {
             for (int i1 = 0; i1 < i; i1++) {
                 i1 += i1;
             }
-            System.out.println("EService Finish");
+            log.info("EService Finish");
 
         } catch (InterruptedException e) {
             e.printStackTrace();

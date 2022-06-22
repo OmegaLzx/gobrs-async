@@ -23,6 +23,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 class TaskActuator implements Runnable, Cloneable {
 
@@ -137,7 +138,7 @@ class TaskActuator implements Runnable, Cloneable {
                     task.onFail(support);
                 } catch (Exception ex) {
                     // Failed events are not processed
-                    log.error("task onFail process is error {}", ex);
+                    log.error("task onFail process is error ", ex);
                 }
                 /**
                  * transaction task
@@ -233,6 +234,7 @@ class TaskActuator implements Runnable, Cloneable {
      */
     public void nextTask(TaskLoader taskLoader) {
         if (subTasks != null) {
+            log.info("获取下一个并发任务序列 {}", subTasks.stream().map(AsyncTask::getName).collect(Collectors.toList()));
             for (int i = 0; i < subTasks.size(); i++) {
                 TaskActuator process = taskLoader
                         .getProcess(subTasks.get(i));
@@ -240,7 +242,11 @@ class TaskActuator implements Runnable, Cloneable {
                  * Check whether the subtask depends on a task that has been executed
                  * The number of tasks that it depends on to get to this point minus one
                  */
-                if (process.releasingDependency() == 0) {
+                int releasingDependencyCount = process.releasingDependency();
+                if (process.getTask().getName() != null) {
+                    log.info("{} 前置依赖个数 {}", process.getTask().getName(), releasingDependencyCount);
+                }
+                if (releasingDependencyCount == 0) {
                     /**
                      * for thread reuse
                      */

@@ -79,6 +79,7 @@ public class TaskLoader {
         }
         // wait
         waitIfNecessary();
+        // 返回结果
         return back(begins);
     }
 

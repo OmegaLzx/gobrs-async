@@ -4,6 +4,7 @@ import com.gobrs.async.GobrsAsync;
 import com.gobrs.async.domain.AsyncResult;
 import com.gobrs.async.example.service.GobrsService;
 import com.gobrs.async.rule.Rule;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("gobrs")
+@Slf4j
 public class GobrsController {
 
     @Autowired
@@ -40,7 +42,7 @@ public class GobrsController {
         gobrsService.future();
 
         long coust = System.currentTimeMillis() - start;
-        System.out.println("future " + coust);
+        log.info("future " + coust);
 
     }
 
@@ -52,7 +54,7 @@ public class GobrsController {
         gobrsService.gobrsAsync();
         //结束时间: 当前时间 - 开始时间
         long coust = System.currentTimeMillis() - start;
-        System.out.println("gobrs-Async " + coust);
+        log.info("gobrs-Async " + coust);
 
     }
 

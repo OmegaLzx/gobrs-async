@@ -16,6 +16,6 @@ public class GobrsServiceTest {
 
     @Test
     void name() {
-        gobrsAsync.go("test1", Object::new);
+        gobrsAsync.go("test", Object::new);
     }
 }

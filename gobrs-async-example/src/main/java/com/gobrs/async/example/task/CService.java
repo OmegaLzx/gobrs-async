@@ -23,9 +23,7 @@ public class CService extends AsyncTask<Object, Integer> {
     public Integer task(Object o, TaskSupport support) {
         try {
             log.info("CService Begin");
-            //获取 所依赖的父任务的结果
-            AService result = getResult(support, AService.class);
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             log.info("CService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();

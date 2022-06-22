@@ -37,7 +37,7 @@ public class GobrsPrint {
             padding.append(" ");
         }
 
-        System.out.println(AnsiOutput.toString(banner, AnsiColor.GREEN, GOBRS_ASYNC, AnsiColor.DEFAULT,
+        log.info(AnsiOutput.toString(banner, AnsiColor.GREEN, GOBRS_ASYNC, AnsiColor.DEFAULT,
                 padding.toString(), AnsiStyle.FAINT, version, "\n\n", GOBRS_ASYNC_GITHUB, "\n", GOBRS_ASYNC_SITE, "\n"));
         log.info("Gobrs-Async Load Successful");
     }

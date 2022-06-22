@@ -1,7 +1,9 @@
 package com.gobrs.async.example.task;
 
 import com.gobrs.async.TaskSupport;
+import com.gobrs.async.anno.Task;
 import com.gobrs.async.task.AsyncTask;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,9 +14,10 @@ import org.springframework.stereotype.Component;
  * @create: 2022-03-20
  **/
 @Component
+@Task(name = "任务D")
+@Slf4j
 public class DService extends AsyncTask<Object, Object> {
 
-    int i = 10000;
 
     @Override
     public void prepare(Object o) {
@@ -24,12 +27,9 @@ public class DService extends AsyncTask<Object, Object> {
     @Override
     public Object task(Object o, TaskSupport support) {
         try {
-            System.out.println("DService Begin");
-            Thread.sleep(200);
-            for (int i1 = 0; i1 < i; i1++) {
-                i1 += i1;
-            }
-            System.out.println("DService Finish");
+            log.info("DService Begin");
+            Thread.sleep(1000);
+            log.info("DService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,7 @@ public class AService extends AsyncTask<Object, Object> {
     public Object task(Object o, TaskSupport support) {
         try {
             log.info("AService Begin");
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             log.info("AService Finish");
         } catch (InterruptedException e) {
             e.printStackTrace();
