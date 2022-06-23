@@ -167,9 +167,9 @@ class TaskActuator implements Runnable, Cloneable {
         if (task.isExclusive()) {
             List<AsyncTask> asyncTaskList = upwardTasksMap.get(task);
             Map<AsyncTask, Future> futuresAsync = support.getTaskLoader().futuresAsync;
-            futuresAsync.forEach((x, y) -> {
-                if (asyncTaskList.contains(x)) {
-                    y.cancel(true);
+            futuresAsync.forEach((asyncTask, future) -> {
+                if (asyncTaskList.contains(asyncTask)) {
+                    future.cancel(true);
                 }
             });
         }
