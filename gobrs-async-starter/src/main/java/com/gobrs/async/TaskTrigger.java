@@ -4,6 +4,7 @@ import com.gobrs.async.domain.AsyncParam;
 import com.gobrs.async.spring.GobrsSpring;
 import com.gobrs.async.task.AsyncTask;
 import com.gobrs.async.threadpool.GobrsAsyncThreadPoolFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -14,6 +15,7 @@ import java.util.*;
  * @create: 2022-03-16
  **/
 
+@Slf4j
 class TaskTrigger {
 
     private final TaskFlow taskFlow;
@@ -94,9 +96,10 @@ class TaskTrigger {
 
 
     TaskLoader trigger(AsyncParam param, long timeout) {
+        log.info("trigger start!!! AsyncParam {}, timeout {}", param, timeout);
         IdentityHashMap<AsyncTask, TaskActuator> newProcessMap = new IdentityHashMap<>(prepareTaskMap.size());
-        /**
-         * Create a task loader, A task flow corresponds to a taskLoader
+        /*
+         * 创建一个任务加载器，一个任务流对应一个taskLoader
          */
         TaskLoader loader = new TaskLoader(threadPoolFactory.getThreadPoolExecutor(), newProcessMap, timeout);
         TaskSupport support = getSupport(param);
@@ -114,6 +117,7 @@ class TaskTrigger {
             processor.init(support, param);
             newProcessMap.put(task, processor);
         }
+        log.info("创建一个任务加载器，一个任务流对应一个taskLoader: {}", loader);
         return loader;
     }
 

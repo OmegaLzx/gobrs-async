@@ -77,14 +77,6 @@ public class GobrsAsync {
         return taskFlow.get(taskName).after(tasks);
     }
 
-    /**
-     * Really open the task flow Multi-threaded flow master switch Have fun
-     *
-     * @param ruleName
-     * @param param
-     * @param timeout
-     * @return
-     */
     public AsyncResult go(String ruleName, AsyncParam param, long timeout) {
         if (check(ruleName).isPresent()) {
             return trigger.get(ruleName).trigger(param, timeout).load();

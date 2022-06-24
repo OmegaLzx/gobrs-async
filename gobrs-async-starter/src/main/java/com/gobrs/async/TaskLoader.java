@@ -70,7 +70,7 @@ public class TaskLoader {
 
     AsyncResult load() {
         ArrayList<TaskActuator> begins = getBeginProcess();
-        log.info("com.gobrs.async.TaskLoader.load 当前taskActuator {}", begins.stream().map(t -> t.getTask().getName()).collect(Collectors.toList()));
+        log.info("启动没有任何依赖关系的任务线程 {}", begins.stream().map(t -> t.getTask().getName()).collect(Collectors.toList()));
         for (TaskActuator process : begins) {
             /**
              * Start the thread to perform tasks without any dependencies
@@ -168,6 +168,7 @@ public class TaskLoader {
      * The main process interrupts and waits for the task to flow
      */
     private void waitIfNecessary() {
+        log.info("主进程中断并等待任务执行 超时时间 {}", timeout);
         try {
             if (timeout > 0) {
                 if (!completeLatch.await(timeout, TimeUnit.MILLISECONDS)) {
@@ -193,8 +194,9 @@ public class TaskLoader {
     void startProcess(TaskActuator taskActuator) {
 
         if (timeout > 0 || taskActuator.getGobrsAsyncProperties().isTaskInterrupt()) {
-            /**
+            /*
              * If you need to interrupt then you need to save all the task threads and you need to manipulate shared variables
+             * 如果你需要中断，那么你需要保存所有的任务线程，并操作共享变量
              */
             lock.lock();
             try {
@@ -207,9 +209,11 @@ public class TaskLoader {
                 lock.unlock();
             }
         } else {
-            /**
+            /*
              * Run the command without setting the timeout period
+             * 无超时时间,执行该任务线程
              */
+            log.info("执行非中断分支，taskActuator {}", taskActuator);
             Future<?> submit = executorService.submit(taskActuator);
             futuresAsync.put(taskActuator.task, submit);
         }
@@ -247,6 +251,7 @@ public class TaskLoader {
      * @return
      */
     private AsyncResult back(List<TaskActuator> begins) {
+        log.info("主线程等待，同步获取结果");
         TaskSupport support = getSupport(begins);
         AsyncResult asyncResult = new AsyncResult();
         asyncResult.setResultMap(support.getResultMap());

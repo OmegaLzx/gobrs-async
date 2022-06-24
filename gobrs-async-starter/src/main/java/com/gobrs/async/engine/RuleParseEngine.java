@@ -40,7 +40,6 @@ public class RuleParseEngine extends AbstractEngine {
 
     @Override
     public void doParse(Rule rule, boolean reload) {
-
         String[] taskFlows = rule.getContent().replaceAll("\\s+", "").split(gobrsAsyncProperties.getSplit());
         log.info("com.gobrs.async.engine.RuleParseEngine.doParse taskFlows {}", Arrays.toString(taskFlows));
         /**
@@ -160,6 +159,7 @@ public class RuleParseEngine extends AbstractEngine {
             if (cursor == 3 && RULE_EXCLUSIVE.equals(preNamed[2])) {
                 task.setExclusive(true);
             }
+            log.info("解析注解配置 task: {}", task);
             return task;
         }
 
@@ -178,8 +178,8 @@ public class RuleParseEngine extends AbstractEngine {
              *  parsing task rule configuration
              */
             return Optional.ofNullable(getAsyncTask(taskBean))
-                    .map((bean) -> Optional.ofNullable(cacheTaskWrappers.get(taskBean))
-                            .map((tk) -> {
+                    .map(bean -> Optional.ofNullable(cacheTaskWrappers.get(taskBean))
+                            .map(tk -> {
                                 taskReceive.then(clear, tk);
                                 return tk;
                             }).orElseGet(() -> {

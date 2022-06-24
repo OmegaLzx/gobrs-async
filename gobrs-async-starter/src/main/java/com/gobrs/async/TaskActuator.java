@@ -121,6 +121,8 @@ class TaskActuator implements Runnable, Cloneable {
                 /**
                  * Success callback
                  */
+//                log.info("异步执行onSuccess回调");
+//                support.getExecutorService().submit(() -> task.onSuccess(support));
                 task.onSuccess(support);
             }
             /**
@@ -135,6 +137,7 @@ class TaskActuator implements Runnable, Cloneable {
                 support.getResultMap().put(task.getClass(), buildErrorResult(null, e));
 
                 try {
+//                    support.getExecutorService().submit(() -> task.onFail(support));
                     task.onFail(support);
                 } catch (Exception ex) {
                     // Failed events are not processed
@@ -238,9 +241,11 @@ class TaskActuator implements Runnable, Cloneable {
             for (int i = 0; i < subTasks.size(); i++) {
                 TaskActuator process = taskLoader
                         .getProcess(subTasks.get(i));
-                /**
+                /*
                  * Check whether the subtask depends on a task that has been executed
                  * The number of tasks that it depends on to get to this point minus one
+                 * 检查子任务是否依赖于已执行的任务
+                 * 到达这一点所依赖的任务数减去1
                  */
                 int releasingDependencyCount = process.releasingDependency();
                 if (process.getTask().getName() != null) {
@@ -251,8 +256,10 @@ class TaskActuator implements Runnable, Cloneable {
                      * for thread reuse
                      */
                     if (subTasks.size() == 1 && !process.task.isExclusive()) {
+                        log.info("线程重用分支 -> 当前线程执行任务");
                         process.run();
                     } else {
+                        log.info("线程重用分支 -> 线程池执行任务");
                         taskLoader.startProcess(process);
                     }
                 }
@@ -280,6 +287,7 @@ class TaskActuator implements Runnable, Cloneable {
      * @return
      */
     public int releasingDependency() {
+        log.info("释放依赖闭锁 task {}, 释放前依赖数 {}", this.getTask().getName(), upstreamDepdends);
         lock.lock();
         try {
             return --upstreamDepdends;
