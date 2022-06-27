@@ -140,7 +140,7 @@ public abstract class AsyncTask<P, R> implements GobrsTask<P, R> {
 
     public boolean stopAsync(TaskSupport support) {
         try {
-            ErrorCallback errorCallback = new ErrorCallback(() -> support.getParam(), null, support, this);
+            ErrorCallback errorCallback = new ErrorCallback(support::getParam, null, support, this);
             support.taskLoader.setExpCode(new AtomicInteger(ExpState.DEFAULT.getCode()));
             support.taskLoader.errorInterrupted(errorCallback);
         } catch (Exception ex) {
@@ -155,7 +155,7 @@ public abstract class AsyncTask<P, R> implements GobrsTask<P, R> {
             support.taskLoader.setIsRunning(false);
             support.taskLoader.setExpCode(new AtomicInteger(expCode));
 
-            ErrorCallback errorCallback = new ErrorCallback(() -> support.getParam(), null, support, this);
+            ErrorCallback errorCallback = new ErrorCallback(support::getParam, null, support, this);
             support.taskLoader.errorInterrupted(errorCallback);
 
         } catch (Exception ex) {
